@@ -1,18 +1,37 @@
 package com.techelevator.tenmo;
 
 import com.techelevator.tenmo.model.AuthenticatedUser;
+import com.techelevator.tenmo.model.Transaction;
 import com.techelevator.tenmo.model.UserCredentials;
 import com.techelevator.tenmo.services.AuthenticationService;
 import com.techelevator.tenmo.services.ConsoleService;
+import com.techelevator.util.BasicLogger;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.web.client.ResourceAccessException;
+import org.springframework.web.client.RestClientResponseException;
+import org.springframework.web.client.RestTemplate;
+
+import java.math.BigDecimal;
 
 public class App {
 
     private static final String API_BASE_URL = "http://localhost:8080/";
 
+    private final Transaction transaction = new Transaction();
+    private final RestTemplate restTemplate = new RestTemplate();
     private final ConsoleService consoleService = new ConsoleService();
     private final AuthenticationService authenticationService = new AuthenticationService(API_BASE_URL);
 
     private AuthenticatedUser currentUser;
+
+    private String authToken = null;
+
+    public void setAuthToken(String authToken) {
+        this.authToken = authToken;
+    }
 
     public static void main(String[] args) {
         App app = new App();
@@ -84,9 +103,14 @@ public class App {
         }
     }
 
-	private void viewCurrentBalance() {
-		// TODO Auto-generated method stub
-		
+	private BigDecimal viewCurrentBalance(int transferId) {
+        Transaction transaction = null;
+        try {
+            transaction = restTemplate.exchange(API_BASE_URL + "" + transferId, HttpMethod.GET, makeAuctionEntity(Transaction transaction), Transaction.class);
+        } catch (RestClientResponseException | ResourceAccessException e) {
+            BasicLogger.log(e.getMessage());
+        }
+        return transaction.getAmount();
 	}
 
 	private void viewTransferHistory() {
@@ -108,5 +132,12 @@ public class App {
 		// TODO Auto-generated method stub
 		
 	}
+
+    private HttpEntity<Transaction> makeAuctionEntity(Transaction auction) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(authToken);
+        return new HttpEntity<>(auction, headers);
+    }
 
 }
