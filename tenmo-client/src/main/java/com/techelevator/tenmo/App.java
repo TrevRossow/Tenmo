@@ -4,6 +4,7 @@ import com.techelevator.tenmo.model.AuthenticatedUser;
 import com.techelevator.tenmo.model.Transfer;
 import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.UserCredentials;
+import com.techelevator.tenmo.services.AccountService;
 import com.techelevator.tenmo.services.AuthenticationService;
 import com.techelevator.tenmo.services.ConsoleService;
 import com.techelevator.util.BasicLogger;
@@ -87,7 +88,7 @@ public class App {
             consoleService.printMainMenu();
             menuSelection = consoleService.promptForMenuSelection("Please choose an option: ");
             if (menuSelection == 1) {
-                viewCurrentBalance(1001);
+                viewCurrentBalance();
             } else if (menuSelection == 2) {
                 viewTransferHistory();
             } else if (menuSelection == 3) {
@@ -105,20 +106,11 @@ public class App {
         }
     }
 
-    private BigDecimal viewCurrentBalance(int transferId) {
-
-//TODO not sure if we should have messed with this
-        //Look at API url being used and if we need 'account'
-       Transfer transfer = null;
-       try {
-            transfer = restTemplate.exchange(API_BASE_URL + "" + transferId, HttpMethod.GET, makeTransferEntity(Transfer null), Transfer.class);
-        } catch (RestClientResponseException | ResourceAccessException e) {
-            BasicLogger.log(e.getMessage());
-        }
-       return transfer.getAmount();
-
-
+    private void viewCurrentBalance() {
+        AccountService account = new AccountService(API_BASE_URL, currentUser);
+        account.getBalance();
     }
+
 
     private void viewTransferHistory() {
         // TODO Auto-generated method stub
@@ -139,12 +131,7 @@ public class App {
         // TODO Auto-generated method stub
 
     }
-//TODO got rid of base auction code
-    private HttpEntity<Transfer> makeTransferEntity(Transfer transfer) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setBearerAuth(authToken);
-        return new HttpEntity<>(transfer, headers);
-    }
+//TODO got rid of base auction code and moved to account service
+
 
 }
