@@ -40,9 +40,9 @@ public class JdbcAccountDao implements AccountDao {
                 "FROM account;";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, accountId);
         if (results.next()) {
-            account = mapRowToAccount()
+//            account = mapRowToAccount();
         }
-        return null;
+        return account;
     }
 
     @Override
@@ -66,7 +66,7 @@ public class JdbcAccountDao implements AccountDao {
         account.setAccountId(result.getInt("account_id"));
         account.setUserId(result.getInt("user_id"));
         account.setBalance(result.getBigDecimal("balance"));
-        return account;        
+        return account;
     }
 
 

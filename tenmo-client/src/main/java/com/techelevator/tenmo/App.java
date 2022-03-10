@@ -1,12 +1,18 @@
 package com.techelevator.tenmo;
 
 import com.techelevator.tenmo.model.AuthenticatedUser;
+import com.techelevator.tenmo.model.Transfer;
+import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.UserCredentials;
 import com.techelevator.tenmo.services.AuthenticationService;
 import com.techelevator.tenmo.services.ConsoleService;
+import com.techelevator.util.BasicLogger;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.web.client.ResourceAccessException;
+import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
@@ -15,7 +21,7 @@ public class App {
 
     private static final String API_BASE_URL = "http://localhost:8080/";
 
-    private final Transaction transaction = new Transaction();
+    private final Transfer transfer = new Transfer();
     private final RestTemplate restTemplate = new RestTemplate();
     private final ConsoleService consoleService = new ConsoleService();
     private final AuthenticationService authenticationService = new AuthenticationService(API_BASE_URL);
@@ -101,17 +107,18 @@ public class App {
 
     private BigDecimal viewCurrentBalance(int transferId) {
 
+//TODO not sure if we should have messed with this
+        //Look at API url being used and if we need 'account'
+       Transfer transfer = null;
+       try {
+            transfer = restTemplate.exchange(API_BASE_URL + "" + transferId, HttpMethod.GET, makeTransferEntity(Transfer null), Transfer.class);
+        } catch (RestClientResponseException | ResourceAccessException e) {
+            BasicLogger.log(e.getMessage());
+        }
+       return transfer.getAmount();
 
-//        Transaction transaction = null;
-//        try {
-//            transaction = restTemplate.exchange(API_BASE_URL + "" + transferId, HttpMethod.GET, makeAuctionEntity(Transaction transaction), Transaction.class);
-//        } catch (RestClientResponseException | ResourceAccessException e) {
-//            BasicLogger.log(e.getMessage());
-//        }
-//        return transaction.getAmount();
+
     }
-
-}
 
     private void viewTransferHistory() {
         // TODO Auto-generated method stub
@@ -132,12 +139,12 @@ public class App {
         // TODO Auto-generated method stub
 
     }
-
-    private HttpEntity<Transaction> makeAuctionEntity(Transaction auction) {
+//TODO got rid of base auction code
+    private HttpEntity<Transfer> makeTransferEntity(Transfer transfer) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setBearerAuth(authToken);
-        return new HttpEntity<>(auction, headers);
+        return new HttpEntity<>(transfer, headers);
     }
 
 }
