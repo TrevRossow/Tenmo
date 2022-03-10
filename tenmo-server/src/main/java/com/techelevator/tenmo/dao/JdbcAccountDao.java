@@ -1,15 +1,19 @@
 package com.techelevator.tenmo.dao;
 
 import com.techelevator.tenmo.model.Account;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
+import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
 import java.math.BigDecimal;
 
+@Service
 public class JdbcAccountDao implements AccountDao {
 
+    @Autowired
     private JdbcTemplate jdbcTemplate;
 
     public JdbcAccountDao(JdbcTemplate jdbcTemplate) {
@@ -18,10 +22,12 @@ public class JdbcAccountDao implements AccountDao {
 
     @Override
     public BigDecimal getBalance(int userId) {
-        String sql = "SELECT balance FROM accounts WHERE user_id = ?";
+        String sql = "SELECT balance FROM account WHERE user_id = ?";
         SqlRowSet results=null;
         BigDecimal balance=null;
         try{
+
+            //should we queryForObject instead since one field
             results = jdbcTemplate.queryForRowSet(sql, userId);
             if(results.next()) {
                 balance=results.getBigDecimal("balance");
@@ -40,7 +46,7 @@ public class JdbcAccountDao implements AccountDao {
                 "FROM account;";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, accountId);
         if (results.next()) {
-//            account = mapRowToAccount();
+//            account = mapRowToAccount(results);
         }
         return account;
     }
