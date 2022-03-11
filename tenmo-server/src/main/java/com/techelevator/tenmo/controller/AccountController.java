@@ -31,7 +31,6 @@ public class AccountController {
     public BigDecimal getBalance(@PathVariable int userId) {
         BigDecimal balance = accountDao.getBalance(userId);
         return balance;
-
     }
 
 

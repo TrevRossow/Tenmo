@@ -5,13 +5,13 @@ import com.techelevator.tenmo.model.Account;
 import java.math.BigDecimal;
 
 public interface AccountDao {
-    Account findAccount(int accountId);
+    Account findAccount(int userId);
 
-    Account getAccount(long accountId);
+    public Account getAccount(long accountId);
 
     BigDecimal getBalance(int userId);
 
-    BigDecimal addToBalance(BigDecimal amountadd, int accountId);
+    BigDecimal addToBalance(BigDecimal amountAdd, int accountId);
 
     BigDecimal subtractFromBalance(BigDecimal amountSub, int accountId);
 }

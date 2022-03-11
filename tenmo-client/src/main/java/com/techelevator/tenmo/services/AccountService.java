@@ -15,8 +15,8 @@ import java.math.BigDecimal;
 public class AccountService {
 
     private static String API_BASE_URL = "http://localhost:8080/account/";
-    private RestTemplate restTemplate = new RestTemplate();
-    private AuthenticatedUser currentUser;
+    final private RestTemplate restTemplate = new RestTemplate();
+    final private AuthenticatedUser currentUser;
 
     public AccountService(String url, AuthenticatedUser currentUser) {
         this.currentUser = currentUser;
@@ -25,23 +25,23 @@ public class AccountService {
     }
 
     public BigDecimal getBalance() {
-        BigDecimal balance = new BigDecimal(1000.00);
+        BigDecimal balance = new BigDecimal(0);
         try {
             balance = restTemplate.exchange(API_BASE_URL + "balance/" + currentUser.getUser().getId(),
                     HttpMethod.GET, makeAccountAuthEntity(), BigDecimal.class).getBody();
             System.out.println("Your current account balance is: " + balance);
         } catch (RestClientException e) {
-            System.out.println("Could not get balance");
+            System.out.println("Could not get balance"); //Getting the exception path everytime.
+                                                            // I think problem coming from server side.
         }
         return balance;
-     }
+    }
 
 
-    private HttpEntity makeAccountAuthEntity() {
+    private HttpEntity<Account> makeAccountAuthEntity() {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setBearerAuth(currentUser.getToken());
-        HttpEntity entity = new HttpEntity<>(headers);
-        return entity;
+        return new HttpEntity<>(headers);
     }
 }

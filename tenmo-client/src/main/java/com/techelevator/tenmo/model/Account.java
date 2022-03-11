@@ -8,7 +8,6 @@ import java.math.BigDecimal;
 public class Account {
 
     private int accountId;
-
     @JsonProperty("id")
     private int userId;
     private BigDecimal balance;
