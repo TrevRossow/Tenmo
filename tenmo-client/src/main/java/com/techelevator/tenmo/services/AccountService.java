@@ -1,12 +1,9 @@
 package com.techelevator.tenmo.services;
 
-import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.AuthenticatedUser;
-import com.techelevator.tenmo.model.Transfer;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
@@ -27,22 +24,21 @@ public class AccountService {
     public BigDecimal getBalance() {
         BigDecimal balance = new BigDecimal(0);
         try {
-            balance = restTemplate.exchange(API_BASE_URL + "balance/" +  currentUser.getUser().getId(),
+            balance = restTemplate.exchange(API_BASE_URL + "balance/" + currentUser.getUser().getId(),
                     HttpMethod.GET, makeAccountAuthEntity(), BigDecimal.class).getBody();
             System.out.println("Your current account balance is: " + balance);
         } catch (RestClientException e) {
             System.out.println("Could not get balance"); //Getting the exception path everytime.
-                                                            // I think problem coming from server side.
+            // I think problem coming from server side.
         }
         return balance;
     }
 
 
-    private HttpEntity<Account> makeAccountAuthEntity() {
+    private HttpEntity<Void> makeAccountAuthEntity() {
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(currentUser.getToken());
-        //headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity entity = new HttpEntity<>(headers);
-        return entity;
+        return new HttpEntity<>(headers);
     }
+
 }
