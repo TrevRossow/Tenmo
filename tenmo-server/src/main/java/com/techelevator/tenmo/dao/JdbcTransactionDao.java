@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.security.Principal;
 import java.util.List;
 
 @Service
@@ -16,8 +17,9 @@ public class JdbcTransactionDao implements TransactionDao {
     private JdbcTemplate jdbcTemplate;
     private AccountDao accountDao;
 
-    public JdbcTransactionDao(JdbcTemplate jdbcTemplate) {
+    public JdbcTransactionDao(JdbcTemplate jdbcTemplate, AccountDao accountDao) {
         this.jdbcTemplate = jdbcTemplate;
+        this.accountDao = accountDao;
     }
 
     @Override

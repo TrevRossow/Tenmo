@@ -5,8 +5,8 @@ import java.math.BigDecimal;
 public class Transaction {
 
     private int transferId;
-    private String transferType;
-    private int transferStatus;
+    private int transferType;
+    private String transferStatus;
     private int accountFrom;
     private int accountTo;
     private BigDecimal amount;
@@ -19,19 +19,19 @@ public class Transaction {
         this.transferId = transferId;
     }
 
-    public String getTransferType() {
+    public int getTransferType() {
         return transferType;
     }
 
-    public void setTransferType(String transferType) {
+    public void setTransferType(int transferType) {
         this.transferType = transferType;
     }
 
-    public int getTransferStatus() {
+    public String getTransferStatus() {
         return transferStatus;
     }
 
-    public void setTransferStatus(int transferStatus) {
+    public void setTransferStatus(String transferStatus) {
         this.transferStatus = transferStatus;
     }
 

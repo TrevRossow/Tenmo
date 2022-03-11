@@ -42,30 +42,26 @@ public class JdbcAccountDao implements AccountDao {
     @Override
     public Account getAccount(long accountId) {
         Account account = null;
-        final String sql = "SELECT *\n" +
-                "FROM account;";
+        final String sql = "SELECT account_id, user_id, balance " +
+                "FROM account " +
+                "WHERE account_id = ?;";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, accountId);
         if (results.next()) {
-//            account = mapRowToAccount(results);
+            account = mapRowToAccount(results);
         }
         return account;
     }
 
     @Override
-    public Account findAccount(int accountId) {
-        return null;
-    }
-
-    @Override
     public BigDecimal addToBalance(BigDecimal amountAdd, int userId) {
-        Account account = findAccount(userId);
+        Account account = getAccount(userId);
         BigDecimal amount = account.getBalance().add(amountAdd);
         System.out.println(amount);
-        final String sql = "UPDATE accounts " +
+        final String sql = "UPDATE account " +
                             "SET balance = ? " +
                             "WHERE user_id = ?";
-        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, amountAdd, userId);
-        return account.getBalance();
+        jdbcTemplate.update(sql, amount, userId);
+        return amount;
     }
 
     @Override
