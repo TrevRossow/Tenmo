@@ -56,10 +56,16 @@ public class JdbcAccountDao implements AccountDao {
         return null;
     }
 
-
     @Override
-    public BigDecimal addToBalance(BigDecimal amountadd, int accountId) {
-        return null;
+    public BigDecimal addToBalance(BigDecimal amountAdd, int userId) {
+        Account account = findAccount(userId);
+        BigDecimal amount = account.getBalance().add(amountAdd);
+        System.out.println(amount);
+        final String sql = "UPDATE accounts " +
+                            "SET balance = ? " +
+                            "WHERE user_id = ?";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, amountAdd, userId);
+        return account.getBalance();
     }
 
     @Override
@@ -75,5 +81,6 @@ public class JdbcAccountDao implements AccountDao {
         return account;
     }
 
+   //private BigDecimal
 
 }

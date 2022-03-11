@@ -10,7 +10,7 @@ public interface TransactionDao {
 
     Transaction getTransactionById(int transactionId);
 
-    String transfer(int transferFrom, int transferTo, BigDecimal amount);
+    String sendTransfer(int transferFrom, int transferTo, BigDecimal amount);
 
     String transferFromUser(int transferFrom, int transferTo, BigDecimal amount);
 

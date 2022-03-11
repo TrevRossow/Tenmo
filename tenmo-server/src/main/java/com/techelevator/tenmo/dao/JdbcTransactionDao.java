@@ -1,5 +1,6 @@
 package com.techelevator.tenmo.dao;
 
+import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.Transaction;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -21,7 +22,9 @@ public class JdbcTransactionDao implements TransactionDao {
     }
 
     @Override
-    public String transfer(int transferFrom, int transferTo, BigDecimal amount) {
+    public String sendTransfer(int transferFrom, int transferTo, BigDecimal amount) {
+        final String sql = "";
+        
         return null;
     }
 
