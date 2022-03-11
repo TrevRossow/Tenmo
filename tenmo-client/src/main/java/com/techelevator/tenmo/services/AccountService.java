@@ -27,7 +27,7 @@ public class AccountService {
     public BigDecimal getBalance() {
         BigDecimal balance = new BigDecimal(0);
         try {
-            balance = restTemplate.exchange(API_BASE_URL + "balance/" + currentUser.getUser().getId(),
+            balance = restTemplate.exchange(API_BASE_URL + "balance/" +  currentUser.getUser().getId(),
                     HttpMethod.GET, makeAccountAuthEntity(), BigDecimal.class).getBody();
             System.out.println("Your current account balance is: " + balance);
         } catch (RestClientException e) {
@@ -40,8 +40,9 @@ public class AccountService {
 
     private HttpEntity<Account> makeAccountAuthEntity() {
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setBearerAuth(currentUser.getToken());
-        return new HttpEntity<>(headers);
+        //headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity entity = new HttpEntity<>(headers);
+        return entity;
     }
 }
