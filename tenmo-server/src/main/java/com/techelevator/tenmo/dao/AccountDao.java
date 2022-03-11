@@ -5,7 +5,7 @@ import com.techelevator.tenmo.model.Account;
 import java.math.BigDecimal;
 
 public interface AccountDao {
-    //Account findAccount(int userId);
+    //Account findAccountByUserId(int userId);
 
     public Account getAccount(long accountId);
 
