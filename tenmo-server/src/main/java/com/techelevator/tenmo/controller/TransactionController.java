@@ -17,9 +17,10 @@ public class TransactionController {
         this.transactionDao = transactionDao;
     }
 
-    @RequestMapping(path =  "transfer/{id}", method = RequestMethod.POST)
-    public String sendTransferReq (@RequestBody  Transaction transaction){
-        String str= transactionDao.
+    @RequestMapping(path = "/transfer/{id}", method = RequestMethod.POST)
+    public String sendTransferReq (@RequestBody Transaction transaction) {
+        String str= transactionDao.sendTransfer(transaction.getAccountFrom(), transaction.getAccountTo(), transaction.getAmount());
+        return str;
     }
 
 //    @RequestMapping(path = "/balance/{id}", method = RequestMethod.GET)
