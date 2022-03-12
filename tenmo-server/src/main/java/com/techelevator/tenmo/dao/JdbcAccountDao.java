@@ -6,8 +6,6 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Service;
-
-import javax.sql.DataSource;
 import java.math.BigDecimal;
 
 @Service
@@ -19,7 +17,9 @@ public class JdbcAccountDao implements AccountDao {
     public JdbcAccountDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
+
 //gets balance with user id from an ccount
+
     @Override
     public BigDecimal getBalance(int userId) {
         String sql = "SELECT balance " +
@@ -38,7 +38,9 @@ public class JdbcAccountDao implements AccountDao {
         }
         return balance;
     }
+
 //this method gets the account information using the account id
+
     @Override
     public Account getAccount(long accountId) {
         Account account = null;
@@ -51,7 +53,9 @@ public class JdbcAccountDao implements AccountDao {
         }
         return account;
     }
+
 //this method gets the account by user ID
+
     public Account findAccountByUserId(int userId) {
         Account account = null;
         final String sql = "SELECT account_id, user_id, balance " +
@@ -63,7 +67,9 @@ public class JdbcAccountDao implements AccountDao {
         }
         return account;
     }
+
 //the method adds to Balance and returns new balance - we changed from it taken in by userId to account and
+
     @Override
     public BigDecimal addToBalance(BigDecimal amountAdd, int accountId) {
         final String sql = "UPDATE account " +
@@ -72,7 +78,9 @@ public class JdbcAccountDao implements AccountDao {
         jdbcTemplate.update(sql, amountAdd, accountId);
         return this.getAccount(accountId).getBalance();
     }
+
 //subtracts balance and returns new balance - ran in postman and updated sql
+
     @Override
     public BigDecimal subtractFromBalance(BigDecimal amountSub, int accountId) {
         final String sql = "UPDATE account " +
@@ -89,4 +97,5 @@ public class JdbcAccountDao implements AccountDao {
         account.setBalance(result.getBigDecimal("balance"));
         return account;
     }
+
 }

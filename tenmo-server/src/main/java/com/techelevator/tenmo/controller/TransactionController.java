@@ -3,8 +3,6 @@ package com.techelevator.tenmo.controller;
 import com.techelevator.tenmo.dao.TransactionDao;
 import com.techelevator.tenmo.model.Transaction;
 import org.springframework.web.bind.annotation.*;
-
-import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -25,10 +23,14 @@ public class TransactionController {
 
     @RequestMapping(path = "/transfer/{id}", method =RequestMethod.GET)
     public List<Transaction> getAllTransactions(@PathVariable("id") int userId){ //
-    List<Transaction> transaction= transactionDao.getAllTransactions(userId);
+        List<Transaction> transaction= transactionDao.getAllTransactions(userId);
+        return transaction;
+    }
 
-    return transaction;
-
+    @RequestMapping(path = "/transfer/{id}", method =RequestMethod.GET)
+    public Transaction getTransactionById(@PathVariable("id") int transactionId){ //
+        Transaction str = transactionDao.getTransactionById(transactionId);
+        return str;
     }
 
 }

@@ -1,14 +1,11 @@
 package com.techelevator.tenmo.dao;
 
-import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,11 +22,6 @@ public class JdbcTransactionDao implements TransactionDao {
     }
 
     @Override
-    public Transaction getTransactionById(int transactionId) {
-        return null;
-    }
-
-    @Override
     public String sendTransfer(int transferFrom, int transferTo, BigDecimal amount) {
         final String sql = "INSERT INTO transfer (transfer_type_id, transfer_status_id, account_from, account_to, amount) " +
                 "VALUES(2,2,?,?,?)";
@@ -42,20 +34,54 @@ public class JdbcTransactionDao implements TransactionDao {
     @Override
     public String transferFromUser(int transferFrom, int transferTo, BigDecimal amount) {
         final String sql = "INSERT INTO transfer (transfer_type_id, transfer_status_id, account_from, account_to, amount) " +
-                            "VALUES (1,1,?,?,?)";
+                "VALUES (1,1,?,?,?)";
         jdbcTemplate.update(sql, transferFrom, transferTo, amount);
         accountDao.subtractFromBalance(amount, transferFrom);
         accountDao.addToBalance(amount, transferTo);
         return "Your transaction is complete";
     }
 
+//number 5- using their user ID to get all their transactions based on userID
+
     @Override
     public List<Transaction> getAllTransactions(int userId) {
         List<Transaction> transactions = new ArrayList<>();
-        final String sql = "";
-        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId);
+
+        final String sql = "SELECT transfer.transfer_id,transfer_type.transfer_type_id, " +
+                "tenmo_user.username AS username_from, tenmo_two.username AS username_to, transfer.amount, "+
+        "transfer.account_to, transfer.account_from, transfer_type.transfer_type_desc, transfer_status_desc "+
+                "FROM transfer " +
+                "JOIN account ON transfer.account_from = account.account_id " +
+                "JOIN account AS account_two ON transfer.account_to = account_two.account_id " +
+                "JOIN tenmo_user ON account.user_id = tenmo_user.user_id " +
+                "JOIN tenmo_user AS tenmo_two ON account_two.user_id = tenmo_two.user_id " +
+                "JOIN transfer_type ON transfer.transfer_type_id  =transfer_type.transfer_type_id "+
+                "JOIN transfer_status ON  transfer.transfer_status_id = transfer_status. transfer_status_id " +
+                "WHERE tenmo_user.user_id = ? OR tenmo_two.user_id = ?;";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userId, userId);
         while (results.next()) {
             transactions.add(mapRowToTransaction(results));
+        }
+        return transactions;
+    }
+
+    @Override
+    public Transaction getTransactionById(int transactionId) {
+        Transaction transactions = new Transaction();
+        final String sql = "SELECT transfer.transfer_id,transfer_type.transfer_type_id, " +
+                "tenmo_user.username AS username_from, tenmo_two.username AS username_to, transfer.amount, "+
+                "transfer.account_to, transfer.account_from, transfer_type.transfer_type_desc, transfer_status_desc "+
+                "FROM transfer " +
+                "JOIN account ON transfer.account_from = account.account_id " +
+                "JOIN account AS account_two ON transfer.account_to = account_two.account_id " +
+                "JOIN tenmo_user ON account.user_id = tenmo_user.user_id " +
+                "JOIN tenmo_user AS tenmo_two ON account_two.user_id = tenmo_two.user_id " +
+                "JOIN transfer_type ON transfer.transfer_type_id  =transfer_type.transfer_type_id "+
+                "JOIN transfer_status ON  transfer.transfer_status_id = transfer_status. transfer_status_id " +
+                "WHERE tenmo_user.user_id = ? OR tenmo_two.user_id = ?;";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, transactionId);
+        if (results.next()) {
+            transactions = mapRowToTransaction(results);
         }
         return transactions;
     }
@@ -70,14 +96,26 @@ public class JdbcTransactionDao implements TransactionDao {
         return null;
     }
 
+//mapper was including transfertype and status information but commented out pending transfer details method creation
+    //if we break up the mapRowtoTransaction it will mess up the getAllTrans method we made
+  
+
     private Transaction mapRowToTransaction(SqlRowSet result) {
         Transaction transaction = new Transaction();
         transaction.setTransferId(result.getInt("transfer_id"));
-        transaction.setTransferType(result.getInt("transfer_type"));
-        transaction.setTransferStatus(result.getString("transfer_status"));
+        transaction.setTransferTypeId(result.getInt("transfer_type_id"));
+
         transaction.setAccountFrom(result.getInt("account_from"));
         transaction.setAccountTo(result.getInt("account_to"));
+
         transaction.setAmount(result.getBigDecimal("amount"));
+
+        transaction.setUserFrom(result.getString("username_from"));
+        transaction.setUserTo(result.getString("username_to"));
+
+        transaction.setTransferStatus(result.getString("transfer_status_desc"));
+        transaction.setTransferType(result.getString("transfer_type_desc"));
+
         return transaction;
     }
 
