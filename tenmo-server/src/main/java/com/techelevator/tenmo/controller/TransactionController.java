@@ -10,7 +10,6 @@ import java.util.List;
 @RestController
 public class TransactionController {
 
-
     private TransactionDao transactionDao;
 
     public TransactionController(TransactionDao transactionDao) {
@@ -26,16 +25,10 @@ public class TransactionController {
 
     @RequestMapping(path = "/transfer/{id}", method =RequestMethod.GET)
     public List<Transaction> getAllTransactions(@PathVariable("id") int userId){ //
-    List<Transaction> transaction= transactionDao.getTransactionById(ac);
+    List<Transaction> transaction= transactionDao.getAllTransactions(userId);
 
     return transaction;
 
     }
-
-//    @RequestMapping(path = "/balance/{id}", method = RequestMethod.GET)
-//    public BigDecimal getBalance(@PathVariable("id") int userId) {
-//        BigDecimal balance = accountDao.getBalance(userId);
-//        return balance;
-//    }
 
 }

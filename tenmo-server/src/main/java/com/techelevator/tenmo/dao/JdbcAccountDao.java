@@ -89,7 +89,4 @@ public class JdbcAccountDao implements AccountDao {
         account.setBalance(result.getBigDecimal("balance"));
         return account;
     }
-
-   //private BigDecimal
-
 }

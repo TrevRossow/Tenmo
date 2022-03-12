@@ -75,7 +75,6 @@ public class JdbcUserDao implements UserDao {
         } catch (DataAccessException e) {
             return false;
         }
-
         return true;
     }
 
@@ -88,4 +87,5 @@ public class JdbcUserDao implements UserDao {
         user.setAuthorities("USER");
         return user;
     }
+
 }
