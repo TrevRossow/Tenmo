@@ -69,16 +69,16 @@ public class JdbcTransactionDao implements TransactionDao {
     public Transaction getTransactionById(int transactionId) {
         Transaction transactions = new Transaction();
         final String sql = "SELECT transfer.transfer_id,transfer_type.transfer_type_id, " +
-                "tenmo_user.username AS username_from, tenmo_two.username AS username_to, transfer.amount, "+
-                "transfer.account_to, transfer.account_from, transfer_type.transfer_type_desc, transfer_status_desc "+
+                "tenmo_user.username AS username_from, tenmo_two.username AS username_to, transfer.amount, " +
+                "transfer.account_to, transfer.account_from, transfer_type.transfer_type_desc, transfer_status_desc " +
                 "FROM transfer " +
                 "JOIN account ON transfer.account_from = account.account_id " +
                 "JOIN account AS account_two ON transfer.account_to = account_two.account_id " +
                 "JOIN tenmo_user ON account.user_id = tenmo_user.user_id " +
                 "JOIN tenmo_user AS tenmo_two ON account_two.user_id = tenmo_two.user_id " +
-                "JOIN transfer_type ON transfer.transfer_type_id  =transfer_type.transfer_type_id "+
+                "JOIN transfer_type ON transfer.transfer_type_id = transfer_type.transfer_type_id " +
                 "JOIN transfer_status ON  transfer.transfer_status_id = transfer_status. transfer_status_id " +
-                "WHERE tenmo_user.user_id = ? OR tenmo_two.user_id = ?;";
+                "WHERE transfer.transfer_id = ?;";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, transactionId);
         if (results.next()) {
             transactions = mapRowToTransaction(results);

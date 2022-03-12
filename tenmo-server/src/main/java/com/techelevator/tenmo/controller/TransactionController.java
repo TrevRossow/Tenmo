@@ -27,8 +27,8 @@ public class TransactionController {
         return transaction;
     }
 
-    @RequestMapping(path = "/transfer/{id}", method =RequestMethod.GET)
-    public Transaction getTransactionById(@PathVariable("id") int transactionId){ //
+    @RequestMapping(path = "/search/{id}", method =RequestMethod.GET)
+    public Transaction getTransactionById(@PathVariable("id") int transactionId){
         Transaction str = transactionDao.getTransactionById(transactionId);
         return str;
     }

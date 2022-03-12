@@ -7,6 +7,7 @@ import com.techelevator.tenmo.model.UserCredentials;
 import com.techelevator.tenmo.services.AccountService;
 import com.techelevator.tenmo.services.AuthenticationService;
 import com.techelevator.tenmo.services.ConsoleService;
+import com.techelevator.tenmo.services.TransferService;
 import com.techelevator.util.BasicLogger;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -113,8 +114,8 @@ public class App {
 
 
     private void viewTransferHistory() {
-        // TODO Auto-generated method stub
-
+        TransferService transfer = new TransferService(API_BASE_URL, currentUser);
+        transfer.getTransferDetails();
     }
 
     private void viewPendingRequests() {

@@ -18,7 +18,6 @@ public class AccountService {
     public AccountService(String url, AuthenticatedUser currentUser) {
         this.currentUser = currentUser;
         API_BASE_URL = url;
-
     }
 
     public BigDecimal getBalance() {
