@@ -1,7 +1,7 @@
 package com.techelevator.tenmo.model;
 
 import java.math.BigDecimal;
-//TODO - built transaction class to handle running the app to test and built setters/getters
+
 public class Transfer {
     private int transferId;
     private int transferTypeId;

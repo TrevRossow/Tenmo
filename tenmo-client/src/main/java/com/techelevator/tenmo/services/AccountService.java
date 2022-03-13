@@ -33,7 +33,6 @@ public class AccountService {
         return balance;
     }
 
-
     private HttpEntity<Void> makeAccountAuthEntity() {
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(currentUser.getToken());
