@@ -1,11 +1,11 @@
 package com.techelevator.tenmo.model;
 
 import java.math.BigDecimal;
-<<<<<<< HEAD
-// Built transaction class to handle running the app to test and built setters/getters
-=======
-
->>>>>>> eeb0562fcace851ff03b4b6e659dbe7be0f22851
+//<<<<<<< HEAD
+//// Built transaction class to handle running the app to test and built setters/getters
+//=======
+//
+//>>>>>>> eeb0562fcace851ff03b4b6e659dbe7be0f22851
 public class Transfer {
     private int transferId;
     private int transferTypeId;

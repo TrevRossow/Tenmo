@@ -2,10 +2,10 @@ package com.techelevator.tenmo.services;
 
 import com.techelevator.tenmo.model.AuthenticatedUser;
 import com.techelevator.tenmo.model.Transfer;
-<<<<<<< HEAD
+//<<<<<<< HEAD
 import org.springframework.web.client.RestTemplate;
 
-=======
+//=======
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
->>>>>>> eeb0562fcace851ff03b4b6e659dbe7be0f22851
+//>>>>>>> eeb0562fcace851ff03b4b6e659dbe7be0f22851
 public class TransferService {
 
 
