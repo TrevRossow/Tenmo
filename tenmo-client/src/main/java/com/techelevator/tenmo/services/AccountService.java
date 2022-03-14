@@ -31,7 +31,11 @@ public class AccountService {
         }
         return balance;
     }
+<<<<<<< HEAD
 //Making HttpEntity and using token info.
+=======
+
+>>>>>>> eeb0562fcace851ff03b4b6e659dbe7be0f22851
     private HttpEntity<Void> makeAccountAuthEntity() {
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(currentUser.getToken());

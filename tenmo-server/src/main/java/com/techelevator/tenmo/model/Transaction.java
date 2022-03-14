@@ -79,11 +79,11 @@ public class Transaction {
         this.amount = amount;
     }
 
-    public String getUsernameToFrom() {
+    public String getUsernameFrom() {
         return usernameFrom;
     }
 
-    public void setUserFrom(String usernameFrom) {
+    public void setUsernameFrom(String usernameFrom) {
         this.usernameFrom = usernameFrom;
     }
 
@@ -91,7 +91,7 @@ public class Transaction {
         return usernameTo;
     }
 
-    public void setUserTo(String userTo) {
-        this.usernameTo = userTo;
+    public void setUsernameTo(String usernameTo) {
+        this.usernameTo = usernameTo;
     }
 }

@@ -115,7 +115,7 @@ public class App {
 
     private void viewTransferHistory() {
         TransferService transfer = new TransferService(API_BASE_URL, currentUser);
-        transfer.getTransferDetails();
+        transfer.getTransfers();
     }
 
     private void viewPendingRequests() {
