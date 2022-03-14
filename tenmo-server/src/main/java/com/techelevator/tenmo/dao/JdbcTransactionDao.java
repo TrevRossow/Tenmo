@@ -110,8 +110,8 @@ public class JdbcTransactionDao implements TransactionDao {
 
         transaction.setAmount(result.getBigDecimal("amount"));
 
-        transaction.setUserFrom(result.getString("username_from"));
-        transaction.setUserTo(result.getString("username_to"));
+        transaction.setUsernameFrom(result.getString("username_from"));
+        transaction.setUsernameTo(result.getString("username_to"));
 
         transaction.setTransferStatus(result.getString("transfer_status_desc"));
         transaction.setTransferType(result.getString("transfer_type_desc"));

@@ -45,21 +45,22 @@ public class TransferService {
             System.out.println("-------------------------------------------");
             String fromTo = "";
             String name = "";
-            assert transfers != null;
             for (Transfer result : transfers) {
-                if(currentUser.getUser().getId() == result.getAccountFrom()) {
+                if (currentUser.getUser().getId() == result.getAccountFrom()) {
                     fromTo = " From: ";
-                    name = result.getUserTo();
+                    name = result.getUserTo(); // user not getting a value
                 } else {
                     fromTo = " To: ";
-                    name = result.getUserFrom();
+                    name = result.getUserFrom(); // user not getting a value
                 }
                 System.out.println(result.getTransferId() + fromTo + name + " " + result.getAmount());
             }
             System.out.println("---------");
             System.out.println("Please enter transfer ID to view details (0 to cancel): ");
-        } catch (RestClientException x){
+        } catch (RestClientException e) {
             System.out.println("Could not view your transaction history");
+        } catch (NullPointerException e) {
+            System.out.println("There was a problem executing your request");
         }
         return transfers;
     }
@@ -68,19 +69,6 @@ public class TransferService {
         final String url = API_BASE_URL + "search/";
         return this.restTemplate.getForObject(url, Transfer.class);
     }
-
-//    public BigDecimal getBalance() {
-//        BigDecimal balance = new BigDecimal(0);
-//        try {
-//            balance = restTemplate.exchange(API_BASE_URL + "balance/" + currentUser.getUser().getId(),
-//                    HttpMethod.GET, makeAccountAuthEntity(), BigDecimal.class).getBody();
-//            System.out.println("Your current account balance is: " + balance);
-//        } catch (RestClientException e) {
-//            System.out.println("Could not view transfer history"); //Getting the exception path everytime.
-//
-//        }
-//        return balance;
-//    }
 
     public Transfer requestTeBucks() {
         final String url = API_BASE_URL + "transfers/";
@@ -98,4 +86,5 @@ public class TransferService {
         headers.setBearerAuth(currentUser.getToken());
         return new HttpEntity<>(headers);
     }
+
 }
