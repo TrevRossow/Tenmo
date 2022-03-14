@@ -23,13 +23,15 @@ public class AccountController {
         this.userDao = userDao;
     }
 
+    //Endpoints for balance and pulling all users lists.
     @RequestMapping(path = "/balance/{id}", method = RequestMethod.GET)
     public BigDecimal getBalance(@PathVariable("id") int userId) {
         BigDecimal balance = accountDao.getBalance(userId);
         return balance;
     }
+
     @RequestMapping(path = "/listusers", method = RequestMethod.GET)
-    public List<User> listusers(){
+    public List<User> listusers() {
         List<User> users = userDao.findAll();
         return users;
     }

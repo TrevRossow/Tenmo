@@ -6,6 +6,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Service;
+
 import java.math.BigDecimal;
 
 @Service
@@ -23,11 +24,11 @@ public class JdbcAccountDao implements AccountDao {
     @Override
     public BigDecimal getBalance(int userId) {
         String sql = "SELECT balance " +
-                    "FROM account " +
-                    "WHERE user_id = ?;";
+                "FROM account " +
+                "WHERE user_id = ?;";
         SqlRowSet results = null;
         BigDecimal balance = null;
-        try{
+        try {
             //should we queryForObject instead since one field
             results = jdbcTemplate.queryForRowSet(sql, userId);
             if (results.next()) {
@@ -59,8 +60,8 @@ public class JdbcAccountDao implements AccountDao {
     public Account findAccountByUserId(int userId) {
         Account account = null;
         final String sql = "SELECT account_id, user_id, balance " +
-                            "FROM account " +
-                            "WHERE user_id = ?;";
+                "FROM account " +
+                "WHERE user_id = ?;";
         SqlRowSet result = jdbcTemplate.queryForRowSet(sql, userId);
         if (result.next()) {
             account = mapRowToAccount(result);
@@ -68,28 +69,28 @@ public class JdbcAccountDao implements AccountDao {
         return account;
     }
 
-//the method adds to Balance and returns new balance - we changed from it taken in by userId to account and
+//The method adds to Balance and returns new updated balance.
 
     @Override
     public BigDecimal addToBalance(BigDecimal amountAdd, int accountId) {
         final String sql = "UPDATE account " +
-                            "SET balance = balance + ? " +
-                            "WHERE account_id = ?";
+                "SET balance = balance + ? " +
+                "WHERE account_id = ?";
         jdbcTemplate.update(sql, amountAdd, accountId);
         return this.getAccount(accountId).getBalance();
     }
 
-//subtracts balance and returns new balance - ran in postman and updated sql
+//Subtracts balance and returns new balance.
 
     @Override
     public BigDecimal subtractFromBalance(BigDecimal amountSub, int accountId) {
         final String sql = "UPDATE account " +
-                            "SET balance = balance - ? " +
-                            "WHERE account_id = ?";
+                "SET balance = balance - ? " +
+                "WHERE account_id = ?";
         jdbcTemplate.update(sql, amountSub, accountId);
         return this.getAccount(accountId).getBalance();
     }
-
+//Simple mapper.
     private Account mapRowToAccount(SqlRowSet result) {
         Account account = new Account();
         account.setAccountId(result.getInt("account_id"));

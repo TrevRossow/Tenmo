@@ -19,7 +19,7 @@ public class AccountService {
         this.currentUser = currentUser;
         API_BASE_URL = url;
     }
-
+//Send token using the exchange in order to pull the balance from the server.
     public BigDecimal getBalance() {
         BigDecimal balance = new BigDecimal(0);
         try {
@@ -27,13 +27,11 @@ public class AccountService {
                     HttpMethod.GET, makeAccountAuthEntity(), BigDecimal.class).getBody();
             System.out.println("Your current account balance is: " + balance);
         } catch (RestClientException e) {
-            System.out.println("Could not get balance"); //Getting the exception path everytime.
-            // I think problem coming from server side.
+            System.out.println("Could not get balance"); //Getting the exception pat
         }
         return balance;
     }
-
-
+//Making HttpEntity and using token info.
     private HttpEntity<Void> makeAccountAuthEntity() {
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(currentUser.getToken());

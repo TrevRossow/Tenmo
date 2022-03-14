@@ -106,7 +106,7 @@ public class App {
             consoleService.pause();
         }
     }
-
+//Started required methods for CLI but not completed. Requests were successful in Postman when tested.  Optional requirements not finished.
     private void viewCurrentBalance() {
         AccountService account = new AccountService(API_BASE_URL, currentUser);
         account.getBalance();
@@ -132,7 +132,6 @@ public class App {
         // TODO Auto-generated method stub
 
     }
-//TODO got rid of base auction code and moved to account service
 
 
 }

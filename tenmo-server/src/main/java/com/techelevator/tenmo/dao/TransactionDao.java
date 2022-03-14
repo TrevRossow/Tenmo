@@ -6,6 +6,8 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public interface TransactionDao {
+    //Few methods were not completed (optional)
+
     List<Transaction> getAllTransactions(int userId);
 
     Transaction getTransactionById(int transactionId);

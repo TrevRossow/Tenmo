@@ -19,7 +19,11 @@ public class JdbcTransactionDao implements TransactionDao {
     public JdbcTransactionDao(JdbcTemplate jdbcTemplate, AccountDao accountDao) {
         this.jdbcTemplate = jdbcTemplate;
         this.accountDao = accountDao;
+
     }
+
+    //SQL injection to pull information needed to send transfer to another party.
+    // Uses addToBalance and subtract from balance from AccountDAO
 
     @Override
     public String sendTransfer(int transferFrom, int transferTo, BigDecimal amount) {
@@ -31,6 +35,7 @@ public class JdbcTransactionDao implements TransactionDao {
         return "Your transaction is complete";
     }
 
+    //SQL injection that pulls from our database and allows the user to request money from another user
     @Override
     public String transferFromUser(int transferFrom, int transferTo, BigDecimal amount) {
         final String sql = "INSERT INTO transfer (transfer_type_id, transfer_status_id, account_from, account_to, amount) " +
@@ -41,7 +46,7 @@ public class JdbcTransactionDao implements TransactionDao {
         return "Your transaction is complete";
     }
 
-//number 5- using their user ID to get all their transactions based on userID
+//SQL injection using UserID to get all transactions under their UserId.
 
     @Override
     public List<Transaction> getAllTransactions(int userId) {
@@ -64,7 +69,7 @@ public class JdbcTransactionDao implements TransactionDao {
         }
         return transactions;
     }
-
+//SQL injection to get transaction details by transactionID
     @Override
     public Transaction getTransactionById(int transactionId) {
         Transaction transactions = new Transaction();
@@ -95,11 +100,7 @@ public class JdbcTransactionDao implements TransactionDao {
     public String updateTransactionRequest(Transaction transaction, int statusId) {
         return null;
     }
-
-//mapper was including transfertype and status information but commented out pending transfer details method creation
-    //if we break up the mapRowtoTransaction it will mess up the getAllTrans method we made
-  
-
+  //Maps for all fields used to get transfers by UserId and TransactionID
     private Transaction mapRowToTransaction(SqlRowSet result) {
         Transaction transaction = new Transaction();
         transaction.setTransferId(result.getInt("transfer_id"));
